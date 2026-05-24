@@ -1,0 +1,83 @@
+@startuml DiagramaCasosDeUso
+left to right direction
+' skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor LightYellow
+  BorderColor DarkOrange
+  ArrowColor DarkOrange
+}
+
+actor "Usuário" as U
+actor "Pesquisador" as P
+actor "Gestor" as G
+actor "Avaliador" as AV
+actor "Admin TI" as ADM
+actor "Sistema de E-mail" as EMAIL <<system>>
+actor "API Correios" as CEP <<system>>
+
+' Generalização de atores
+U <|-- P
+U <|-- G
+U <|-- AV
+U <|-- ADM
+
+usecase "Cadastrar Tipo de Bolsa" as UC01
+usecase "Cadastrar Núcleo" as UC02
+usecase "Cadastrar Avaliador" as UC04
+usecase "Buscar CEP (Correios)" as UC_CEP
+usecase "Cadastrar Edital" as UC05
+usecase "Publicar Edital" as UC06
+usecase "Realizar Pré-Cadastro" as UC08
+usecase "Aprovar Pré-Cadastro" as UC09
+usecase "Enviar E-mail de Confirmação" as UC10
+usecase "Submeter Projeto" as UC11
+usecase "Salvar Projeto (Em Edição)" as UC12
+usecase "Enviar Projeto Imediatamente" as UC13
+usecase "Indicar Avaliador do Projeto" as UC14
+usecase "Registrar Parecer Textual" as UC15
+usecase "Enviar Parecer Textual" as UC18
+usecase "Definir Situação Final do Projeto" as UC16
+usecase "Enviar E-mail com Parecer Final" as UC17
+usecase "Autenticar no Sistema" as UC_AUTH
+usecase "Controle de Acesso por Perfil" as UC_ACL
+
+' Usuário
+U -up-> UC_AUTH
+
+' Pesquisador
+P --> UC08
+P --> UC11
+P --> UC12
+P --> UC13
+UC08 ..> UC_CEP : <<include>>
+UC11 .right.> UC12 : <<extend>>
+UC11 .left.> UC13 : <<extend>>
+
+' Gestor
+G --> UC01
+G --> UC02
+G --> UC04
+G --> UC05
+G --> UC06
+G --> UC09
+G --> UC14
+G --> UC15
+G --> UC16
+UC05 .right.> UC06 : <<extend>>
+UC09 ..> UC10 : <<include>>
+UC16 ..> UC17 : <<include>>
+UC15 .right.> UC18 : <<include>>
+
+' Avaliador
+AV --> UC18
+
+' Admin TI
+ADM --> UC_ACL
+
+' Sistemas externos
+UC10 --> EMAIL
+UC17 --> EMAIL
+UC_CEP --> CEP
+
+@enduml

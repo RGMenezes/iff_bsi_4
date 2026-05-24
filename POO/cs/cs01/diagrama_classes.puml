@@ -1,0 +1,176 @@
+@startuml DiagramaDeClasses
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam class {
+  BackgroundColor LightYellow
+  BorderColor DarkOrange
+  ArrowColor DarkGray
+}
+' skinparam linetype ortho
+
+' ─────────────── ENUMS ───────────────
+
+enum VinculoInstitucional {
+  DOCENTE
+  TECNICO_ADMINISTRATIVO
+}
+
+enum RegimeTrabalho {
+  VINTE_HORAS
+  QUARENTA_HORAS
+  DEDICACAO_EXCLUSIVA
+}
+
+enum Formacao {
+  ESPECIALISTA
+  MESTRE
+  DOUTOR
+  OUTROS
+}
+
+enum SituacaoProjeto {
+  EM_EDICAO
+  ENVIADO
+  EM_AVALIACAO
+  APROVADO_CLASSIFICADO
+  APROVADO_NAO_CLASSIFICADO
+  REPROVADO
+}
+
+enum TipoPessoaEquipe {
+  PESQUISADOR
+  ALUNO
+}
+
+enum PerfilUsuario {
+  GESTOR
+  PESQUISADOR
+  AVALIADOR
+  ADMIN_TI
+}
+
+' ─────────────── ENTIDADES ───────────────
+
+class Usuario {
+  - id: Long
+  - nome: String
+  - email: String
+  - senha: String
+  - perfil: PerfilUsuario
+  + autenticar(email: String, senha: String): Boolean
+}
+
+class Pesquisador {
+  - id: Long
+  - cpf: String
+  - dataNascimento: LocalDate
+  - telefoneFixo: String
+  - telefoneCelular: String
+  - linkLattes: String
+  - vinculoInstitucional: VinculoInstitucional
+  - regimeTrabalho: RegimeTrabalho
+  - campus: String
+  - formacao: Formacao
+  - areaConhecimentoCNPq: String
+  - linhaPesquisa: String
+  - areaConhecimentoPesquisa: String
+  - cadastroAprovado: Boolean
+  + solicitarPreCadastro(): void
+}
+
+class Endereco {
+  - logradouro: String
+  - numero: String
+  - complemento: String
+  - cep: String
+  - municipio: String
+  - estado: String
+  + buscarPorCep(cep: String): Endereco
+}
+
+class Nucleo {
+  - id: Long
+  - nome: String
+  - sigla: String
+  - linkGrupoCNPq: String
+}
+
+class Bolsa {
+  - id: Long
+  - nome: String
+  - descricao: String
+}
+
+class Edital {
+  - id: Long
+  - nome: String
+  - arquivoEdital: String
+  - dataInicioSubmissao: LocalDate
+  - dataFimSubmissao: LocalDate
+  - publicado: Boolean
+  + publicar(): void
+  + isPrazoAberto(): Boolean
+}
+
+class Avaliador {
+  - id: Long
+  - nome: String
+  - areaAvaliacao: String
+}
+
+class Projeto {
+  - id: Long
+  - titulo: String
+  - situacao: SituacaoProjeto
+  - ehRenovacao: Boolean
+  - relatorioRenovacao: String
+  - dataSubmissao: LocalDate
+  - resumo: String
+  - arquivoProjeto: String
+  - projetosAnteriores: String
+  - encontrosImportantes: String
+  - sugestoesAvaliadores: String
+  - termoAceito: Boolean
+  - parecer: String
+  + salvarComoRascunho(): void
+  + enviar(): void
+  + definirSituacaoFinal(situacao: SituacaoProjeto): void
+}
+
+class MembroEquipe {
+  - id: Long
+  - nome: String
+  - cpf: String
+  - telefone: String
+  - email: String
+  - tipoPessoa: TipoPessoaEquipe
+}
+
+' ─────────────── ASSOCIAÇÕES ───────────────
+
+Usuario "1" -up- "0..1" Pesquisador : é
+Usuario "1" -- "0..1" Avaliador : é
+
+Pesquisador "1" *-right- "1" Endereco : possui
+
+Pesquisador "1..2" -- "1..*" Nucleo : vinculado a
+note on link: RN04\nno máximo\n2 núcleos
+
+Edital "1" -- "*" Bolsa : define
+
+Projeto "*" -up-> "1" Edital : vinculado a
+Projeto "*" -left-> "1" Bolsa : do tipo
+Projeto "*" --> "1" Nucleo : pertence a
+Projeto "*" -right-> "1" Pesquisador : coordenado por
+Projeto "1" *-- "1..*" MembroEquipe : composto por
+Projeto "*" --> "0..1" Avaliador : avaliado por
+
+' associação enums
+Pesquisador "1" .up.> "1" VinculoInstitucional : possui
+Pesquisador "1" .up.> "1" RegimeTrabalho : possui
+Pesquisador "1" .up.> "1" Formacao : possui
+Projeto "1" .up.> "1" SituacaoProjeto : possui
+MembroEquipe "1" .left.> "1" TipoPessoaEquipe : possui
+Usuario "1" .right.> "1" PerfilUsuario : possui
+
+@enduml
