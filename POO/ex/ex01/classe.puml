@@ -1,0 +1,78 @@
+@startuml DiagramaDeClasses
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam class {
+  BackgroundColor LightYellow
+  BorderColor DarkOrange
+  ArrowColor DarkGray
+}
+skinparam linetype ortho
+
+abstract class Pessoa {
+  - nome: String
+  - cpf: String
+  - telefone: String
+  + cadastrar(): void
+  + consultar(): void
+  + alterar(): void
+  + excluir(): void
+}
+
+class Endereco {
+  - logradouro: String
+  - numero: String
+  - complemento: String
+  - cep: String
+}
+
+class DVD {
+  - titulo: String
+  - genero: String
+  - disponibilidade: boolean
+  + cadastrar(): void
+  + consultar(): void
+  + alterar(): void
+  + excluir(): void
+  + verificarDisponibilidade(): boolean
+  + alterarDisponibilidade(): void
+}
+
+class Atendente <<actor>> {
+}
+
+class Cliente {
+  + validarDados(): boolean
+}
+
+class Locacao {
+  - dataLocacao: String
+  - dataDevolucao: String
+  - situacao: String
+  + emitirComprovante(): void
+  + registrarDevolucao(dvd: DVD): void
+  + registrarLocacao(): void
+  + gerarMulta(): void
+  + verificarAtraso(): boolean
+}
+
+class Multa {
+  - codigo: String
+  - valor: double
+  + emitirBoleto(): double
+}
+
+' Herança
+'como colocar os dois na memsa linha no diagrama?
+Pessoa <|-- Atendente
+Pessoa <|-- Cliente
+
+' Associações
+Pessoa "1" --> "1" Endereco
+
+Locacao -up-> Cliente
+Locacao -right-> DVD
+Locacao .right.> DVD
+Locacao -up-> Atendente
+Locacao "1" --> "1" Multa
+
+@enduml

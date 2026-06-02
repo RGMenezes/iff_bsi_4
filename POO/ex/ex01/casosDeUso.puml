@@ -1,0 +1,32 @@
+@startuml DiagramaCasosDeUso
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor LightYellow
+  BorderColor DarkOrange
+  ArrowColor DarkOrange
+}
+
+actor "Atendente" as a
+
+usecase "Manter cliente" as uc01
+usecase "Manter DVD" as uc02
+usecase "Realizar locação" as uc03
+usecase "Emitir comprovante de locação" as uc04
+usecase "Registrar devolução" as uc05
+usecase "Gerar multa por atraso" as uc06
+usecase "Emitir boleto de multa" as uc07
+usecase "Emitir historico de locações" as uc08
+
+
+a --> uc01
+a --> uc02
+a --> uc03
+a --> uc05
+a --> uc08
+
+uc03 ..> uc04 : <<include>>
+uc05 <.. uc06 : <<extend>>
+uc06 .right.> uc07 : <<include>>
+
+@enduml

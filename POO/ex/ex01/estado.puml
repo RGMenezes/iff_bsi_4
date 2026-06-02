@@ -1,0 +1,22 @@
+@startuml DiagramaEstado
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam class {
+  BackgroundColor LightYellow
+  BorderColor DarkOrange
+  ArrowColor DarkGray
+}
+
+[*] -> Criada
+Criada -> Ativa : registrar locacao
+
+state c <<choice>>
+Ativa --> c : registrar devolucao
+c -left-> Atraso : data prevista ultrapassada
+c -> Finalizada : locacao encerrada dentro do prazo
+
+Atraso --> [*]
+Finalizada --> [*]
+
+@enduml

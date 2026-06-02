@@ -1,0 +1,41 @@
+@startuml DiagramaSequencia
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam class {
+  BackgroundColor LightYellow
+  BorderColor DarkOrange
+  ArrowColor DarkGray
+}
+skinparam linetype ortho
+
+actor "Atendente" as a
+boundary "BoundaryLocação" as b
+control "ControlLocação" as c
+
+a -> b : solicitarLocacao(clienteID, dvdid)
+activate b
+b -> c : realizarLocacao(clienteID, dvdid)
+activate c
+c -> Cliente : validarDados(): boolean
+activate Cliente
+Cliente --> c : ok
+deactivate Cliente
+
+c -> DVD : verificarDisponibilidade(): boolean
+activate DVD
+c --> Locacao : registrarLocacao(): void <<create>>
+deactivate DVD
+activate Locacao
+c -> DVD : alterarDisponibilidade(): void
+deactivate Locacao
+activate DVD
+
+c --> b : locacaoRealizada
+deactivate DVD
+deactivate c
+b --> a : locacaoRealizada
+deactivate b
+
+
+@enduml
