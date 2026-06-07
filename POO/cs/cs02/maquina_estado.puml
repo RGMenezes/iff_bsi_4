@@ -1,0 +1,24 @@
+@startuml DiagramaEstado
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam class {
+  BackgroundColor LightYellow
+  BorderColor DarkOrange
+  ArrowColor DarkGray
+}
+
+[*] --> Criado
+Criado --> Edição
+Edição --> Enviado : submeter
+Enviado --> Avaliação : definir avaliador do projeto
+
+Avaliação --> Reprovado
+Avaliação --> AprovadoNãoClassificado
+Avaliação --> AprovadoClassificado
+
+AprovadoNãoClassificado --> [*]
+Reprovado --> [*]
+AprovadoClassificado --> [*]
+
+@enduml
