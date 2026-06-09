@@ -13,3 +13,15 @@ Funcionario(idFuncionario(pk), idCandidato(fk), matricula, dataAdmissao, chSeman
 
 FuncionarioSetor(idFuncionarioSetor(pk), idFuncionario(fk), idSetor(fk))
 FuncionarioProcessoEleitoral(idFuncionarioProcessoEleitoral(pk), idFuncionario(fk), idProcessoEleitoral(fk))
+
+
+# Outros Exemplos para a hierarquia:
+
+# Apenas a classe principal
+EquipamentoVotacao(idEquipamentoVotacao(pk), idUnidade(fk), descricao, numeroSerie, localizacao, ip, ehNotebook, nomeResponde)
+
+# Todas as classes
+EquipamentoVotacao(idEquipamentoVotacao(pk), idUnidade(fk), descricao, numeroSerie, localizacao)
+Computador(idEquipamentoVotacao(pk)(fk), ip, ehNotebook)
+Urna(idEquipamentoVotacao(pk)(fk), nomeResponsavel)
+
