@@ -1,0 +1,54 @@
+@startuml TT_IFF_EER
+
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+skinparam nodesep 150
+hide circle
+
+' ---------- ENTIDADES -------------
+
+entity areaNegocio {
+  * idArea : INT <<PK>>
+  --
+  * descricao : VARCHAR(100)
+}
+
+entity desenvolvedor {
+  * idDesenvolvedor : INT <<PK>>
+  --
+  * nome : VARCHAR(50)
+  * telefone : VARCHAR(11)
+  * dataAdmissao : DATE
+  * dataNascimento : DATE
+}
+
+entity projeto_desenvolvedor {
+  * id_projeto_desenvolvedor : INT <<PK>>
+  --
+  * idDesenvolvedor : INT <<FK>>
+  * idProjeto : INT <<FK>>
+  * funcao : ENUM('testador', 'programador')
+}
+
+entity projetos {
+  * idProjeto : INT <<PK>>
+  --
+  * idGerente : <<FK>>
+  * idArea : <<FK>>
+  * dataInicio : DATE
+  * dataFimEstimada : DATE
+  dataFim : DATE
+  * custoAproximado : FLOAT
+  * statusDesenvolvimento : ENUM('inicial',  'em desenvolvimento', 'implantação', 'concluído')
+  * linguagemProgramacao : ENUM('java', 'python', 'ruby', 'outra')
+  * breveDescricao : VARCHAR(100)
+}
+
+
+' ---------- RELAÇÕES -------------
+
+areaNegocio ||--o{ projetos
+desenvolvedor ||-right-o{ projeto_desenvolvedor
+projetos ||--o{ projeto_desenvolvedor
+
+projetos ||--|| desenvolvedor : gerencia
