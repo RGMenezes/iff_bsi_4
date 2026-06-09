@@ -1,0 +1,15 @@
+Computador(idComputador(pk), idUnidade(fk), descricao, numeroSerie, localizacao, ip, ehNotebook)
+Urna(idUrna(pk), idUnidade(fk), descricao, numeroSerie, localizacao, nomeResponsavel)
+
+Unidade(idUnidade(pk), idUnidadePai(fk), descricao)
+
+Setor(idSetor(pk), idUnidade(fk), descricao)
+ProcessoEleitoral(idProcessoEleitoral(pk), idUnidade(fk), descricao, qtdeBranco, qtdeNulo, situacao)
+
+PeriodoEleicao(idPeriodoEleicao(pk), idProcessoEleitoral(fk), dataInicio, dataFim, horaInicio, horaFim, situacao)
+
+Candidato(idCandidato(pk), idProcessoEleitoral(fk), numero, descricao, qtde)
+Funcionario(idFuncionario(pk), idCandidato(fk), matricula, dataAdmissao, chSemanal, numConselho)
+
+FuncionarioSetor(idFuncionarioSetor(pk), idFuncionario(fk), idSetor(fk))
+FuncionarioProcessoEleitoral(idFuncionarioProcessoEleitoral(pk), idFuncionario(fk), idProcessoEleitoral(fk))
