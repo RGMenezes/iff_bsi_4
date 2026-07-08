@@ -17,4 +17,12 @@
     - Casa (**cs**) / (**cs01**)
   - Estrutura: *Flexivel*
 
+- Projeto Orientado a Objeto
+  - Tecs: **C**
+  - Pasta: **EDD**
+  - SubPastas:
+    - Exercícios (**ex**) / (**ex01**)
+    - Casa (**cs**) / (**cs01**)
+  - Estrutura: *Flexivel*
+
 Este repositório serve como um ponto central para todos os materiais e códigos desenvolvidos nas disciplinas do 4º período do curso de Bacharelado em Sistemas de Informação (BSI) do IFF.
