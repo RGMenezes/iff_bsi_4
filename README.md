@@ -10,7 +10,7 @@
   - Estrutura: *Flexivel*
 
 - Projeto Orientado a Objeto
-  - Tecs: **PlantUML**
+  - Tecs: **PlantUML**, **Java**
   - Pasta: **POO**
   - SubPastas:
     - Exercícios (**ex**) / (**ex01**)
@@ -18,7 +18,7 @@
   - Estrutura: *Flexivel*
 
 - Projeto Orientado a Objeto
-  - Tecs: **C**
+  - Tecs: **C**, **Java**
   - Pasta: **EDD**
   - SubPastas:
     - Exercícios (**ex**) / (**ex01**)
