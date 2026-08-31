@@ -1,0 +1,91 @@
+@startuml TrainingTimerModel
+' Training Timer IFF — APPLICATION / Ports
+' Estilo inspirado no visual UML clássico do Astah.
+
+title APPLICATION — Ports (interfaces)
+
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam linetype ortho
+skinparam dpi 160
+skinparam nodesep 50
+skinparam ranksep 65
+skinparam ArrowColor #3A3A3A
+skinparam classBackgroundColor white
+skinparam classBorderColor #333333
+skinparam classFontColor #111111
+skinparam classFontName Arial
+skinparam classAttributeFontName Arial
+skinparam classAttributeFontColor #111111
+skinparam classStereotypeFontName Arial
+skinparam classStereotypeFontStyle italic
+skinparam classAttributeIconSize 0
+skinparam classBorderThickness 1
+skinparam titleFontName Arial
+skinparam titleFontSize 18
+skinparam titleFontStyle bold
+
+left to right direction
+
+class UserRepositoryPort <<interface>> {
+    +findById(Long) : Optional<User>
+    +findByEmail(String) : Optional<User>
+    +findByRole(UserRole) : List<User>
+    +existsByEmail(String) : boolean
+    +save(User)
+}
+
+class WorkoutSheetRepositoryPort <<interface>> {
+    +findById(Long) : Optional<WorkoutSheet>
+    +findByProfessorId(Long) : List<WorkoutSheet>
+    +findNameByAssignmentId(Long) : Optional<String>
+    +save(WorkoutSheet)
+}
+
+class WorkoutBlockRepositoryPort <<interface>> {
+    +findById(Long) : Optional<WorkoutBlock>
+    +findBySheetId(Long) : List<WorkoutBlock>
+    +save(WorkoutBlock)
+    +delete(Long)
+}
+
+class ExerciseSetRepositoryPort <<interface>> {
+    +findById(Long) : Optional<ExerciseSet>
+    +findByBlockId(Long) : List<ExerciseSet>
+    +save(ExerciseSet)
+    +delete(Long)
+}
+
+class SheetAssignmentRepositoryPort <<interface>> {
+    +findById(Long) : Optional<SheetAssignment>
+    +findByStudentId(Long) : List<SheetAssignment>
+    +findActiveByStudentId(Long, LocalDate) : List<SheetAssignment>
+    +save(SheetAssignment)
+    +delete(Long)
+}
+
+class WorkoutSessionRepositoryPort <<interface>> {
+    +findById(Long) : Optional<WorkoutSession>
+    +findByStudentFiltered(Long, DateTime, DateTime, Long) : List<WorkoutSession>
+    +save(WorkoutSession)
+}
+
+class GoalRepositoryPort <<interface>> {
+    +findById(Long) : Optional<Goal>
+    +findByStudentId(Long) : List<Goal>
+    +findByStudentIdAndSheetId(Long, Long) : List<Goal>
+    +save(Goal)
+}
+
+' Ligações invisíveis: apenas para ordenar os ports em uma sequência estável.
+UserRepositoryPort -[hidden]-> WorkoutSheetRepositoryPort
+WorkoutSheetRepositoryPort -[hidden]-> WorkoutBlockRepositoryPort
+WorkoutBlockRepositoryPort -[hidden]-> ExerciseSetRepositoryPort
+ExerciseSetRepositoryPort -[hidden]-> SheetAssignmentRepositoryPort
+SheetAssignmentRepositoryPort -[hidden]-> WorkoutSessionRepositoryPort
+WorkoutSessionRepositoryPort -[hidden]-> GoalRepositoryPort
+
+@enduml

@@ -1,0 +1,166 @@
+@startuml TrainingTimerModel
+' Training Timer IFF — Camada MODEL
+' Estilo inspirado no visual UML clássico do Astah.
+
+title Camada MODEL — Training Timer IFF
+
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam defaultTextAlignment center
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam linetype ortho
+skinparam dpi 160
+skinparam nodesep 45
+skinparam ranksep 55
+skinparam ArrowColor #3A3A3A
+skinparam ArrowThickness 1
+skinparam ArrowFontColor #222222
+skinparam ArrowFontName Arial
+skinparam classBackgroundColor white
+skinparam classBorderColor #333333
+skinparam classFontColor #111111
+skinparam classFontName Arial
+skinparam classAttributeFontName Arial
+skinparam classAttributeFontColor #111111
+skinparam classStereotypeFontName Arial
+skinparam classStereotypeFontStyle italic
+skinparam classAttributeIconSize 0
+skinparam classBorderThickness 1
+skinparam titleFontName Arial
+skinparam titleFontSize 18
+skinparam titleFontStyle bold
+
+left to right direction
+
+class User {
+    -id : Long
+    -name : String
+    -email : String
+    -passwordHash : String
+    -role : UserRole
+    -active : boolean
+    --
+    +deactivate()
+    +rename(String)
+    +changeEmail(String)
+    +changePassword(String)
+    +assignId(Long)
+}
+
+class WorkoutSheet {
+    -id : Long
+    -name : String
+    -createdAt : LocalDateTime
+    -active : boolean
+    -professorId : Long
+    --
+    +rename(String)
+    +deactivate()
+    +assignId(Long)
+}
+
+class WorkoutBlock {
+    -id : Long
+    -name : String
+    -displayOrder : int
+    -sheetId : Long
+    --
+    +rename(String)
+    +reorder(int)
+    +assignId(Long)
+}
+
+class ExerciseSet {
+    -id : Long
+    -exerciseName : String
+    -type : ExerciseType
+    -value : int
+    -restSeconds : int
+    -displayOrder : int
+    -blockId : Long
+    --
+    +update(String, ExerciseType, int, int, int)
+    +assignId(Long)
+}
+
+class SheetAssignment {
+    -id : Long
+    -sheetId : Long
+    -studentId : Long
+    -startDate : LocalDate
+    -endDate : LocalDate
+    --
+    +isActive() : boolean
+    +assignId(Long)
+}
+
+class WorkoutSession {
+    -id : Long
+    -assignmentId : Long
+    -startedAt : LocalDateTime
+    -durationSeconds : int
+    -status : SessionStatus
+    --
+    +assignId(Long)
+}
+
+class Goal {
+    -id : Long
+    -professorId : Long
+    -studentId : Long
+    -sheetId : Long
+    -exerciseName : String
+    -description : String
+    -status : GoalStatus
+    --
+    +markReached()
+    +assignId(Long)
+}
+
+class UserRole <<enumeration>> {
+    PROFESSOR
+    ALUNO
+}
+
+class ExerciseType <<enumeration>> {
+    TEMPO
+    REPETICOES
+}
+
+class SessionStatus <<enumeration>> {
+    COMPLETE
+    INTERRUPTED
+}
+
+class GoalStatus <<enumeration>> {
+    IN_PROGRESS
+    REACHED
+}
+
+class NotFoundException <<exception>>
+class ForbiddenException <<exception>>
+class UnauthorizedException <<exception>>
+class ConflictException <<exception>>
+class BadRequestException <<exception>>
+
+' Relações originais
+User --> UserRole
+ExerciseSet --> ExerciseType
+WorkoutSession --> SessionStatus
+Goal --> GoalStatus
+WorkoutSheet "1" --> "0..*" WorkoutBlock : contém
+WorkoutBlock "1" --> "0..*" ExerciseSet : contém
+WorkoutSheet "1" --> "0..*" SheetAssignment : atribuída via
+User "1" --> "0..*" SheetAssignment : aluno
+SheetAssignment "1" --> "0..*" WorkoutSession : gera
+
+' Ligações invisíveis: somente organização visual
+Goal -[hidden]-> NotFoundException
+NotFoundException -[hidden]-> ForbiddenException
+ForbiddenException -[hidden]-> UnauthorizedException
+UnauthorizedException -[hidden]-> ConflictException
+ConflictException -[hidden]-> BadRequestException
+
+@enduml
